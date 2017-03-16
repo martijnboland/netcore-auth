@@ -1,0 +1,21 @@
+@model IEnumerable<NetCoreAuth.Mvc.Models.TodoItem>
+@{
+    ViewBag.Title = "NetAuthCore.Mvc - Todo list";
+}
+<h1>Todo list</h1>
+
+@if (Model.Any())
+{
+    <ul>
+        @foreach (var todoItem in Model)
+        {
+            <li>@todoItem.Title</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No items found</p>
+}
+
+<p><a asp-action="Create">Add Todo item</a></p>

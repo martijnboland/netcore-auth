@@ -9,7 +9,6 @@ namespace NetCoreAuth.Mvc.Controllers
     {
         public IActionResult LogOut()
         {
-            //Get absolute URL
             string returnUrl = Url.Action(
                 action: "LoggedOut",
                 controller: "Authentication",
@@ -18,7 +17,7 @@ namespace NetCoreAuth.Mvc.Controllers
             return SignOut(
                 new AuthenticationProperties
                 {
-                    RedirectUri = returnUrl
+                    RedirectUri = returnUrl,
                 },
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 OpenIdConnectDefaults.AuthenticationScheme);
