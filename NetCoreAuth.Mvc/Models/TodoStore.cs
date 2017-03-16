@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 
 namespace NetCoreAuth.Mvc.Models
 {
@@ -10,6 +11,12 @@ namespace NetCoreAuth.Mvc.Models
     {
         public static List<TodoItem> TodoItems = new List<TodoItem>();
         public static int MaxId = 0;
+        private readonly IPrincipal _principal;
+
+        public TodoStore(IPrincipal principal)
+        {
+            _principal = principal;
+        }
 
         public IEnumerable<TodoItem> GetAll()
         {
@@ -23,9 +30,9 @@ namespace NetCoreAuth.Mvc.Models
 
         public TodoItem Save(TodoItem item)
         {
+            item.Owner = _principal.Identity.Name;
             if (item.Id == 0)
             {
-                // New
                 item.Id = ++MaxId;
                 item.Order = item.Id;
             }
@@ -33,12 +40,10 @@ namespace NetCoreAuth.Mvc.Models
             var index = TodoItems.IndexOf(item);
             if (index != -1)
             {
-                // Replace existing
                 TodoItems[index] = item;
             }
             else
             {
-                // Add new item
                 TodoItems.Add(item);
             }
 
