@@ -7,6 +7,18 @@ namespace NetCoreAuth.Mvc.Controllers
 {
     public class AuthenticationController : Controller
     {
+        public IActionResult LogIn()
+        {
+            if (! User.Identity.IsAuthenticated)
+            {
+                return Challenge();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         public IActionResult LogOut()
         {
             string returnUrl = Url.Action(
