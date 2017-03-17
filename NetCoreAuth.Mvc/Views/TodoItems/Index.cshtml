@@ -1,0 +1,35 @@
+@model IEnumerable<NetCoreAuth.Mvc.Models.TodoItem>
+@{
+    ViewBag.Title = "NetAuthCore.Mvc - Todo list";
+    var requirement = new NetCoreAuth.Mvc.Authorization.OwnerRequirement();
+}
+<h1>Todo list</h1>
+
+@if (Model.Any())
+{
+    <ul>
+        @foreach (var todoItem in Model)
+        {
+            <li>
+                @if (todoItem.Completed)
+                {
+                    <s title="Owner: @todoItem.Owner">@todoItem.Title</s>
+                }
+                else
+                {
+                    <span title="Owner: @todoItem.Owner">@todoItem.Title</span>
+                }
+                @if (await AuthorizationService.AuthorizeAsync(User, todoItem, requirement))
+                {
+                    @Html.ActionLink("edit", "Edit", new { id = todoItem.Id })
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No items found</p>
+}
+
+<p><a asp-action="Create">Add Todo item</a></p>

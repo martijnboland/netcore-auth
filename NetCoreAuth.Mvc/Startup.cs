@@ -1,9 +1,14 @@
+using System.Security.Principal;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NetCoreAuth.Mvc.Authorization;
+using NetCoreAuth.Mvc.Models;
 
 namespace NetCoreAuth.Mvc
 {
@@ -27,6 +32,13 @@ namespace NetCoreAuth.Mvc
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IPrincipal>(sp => 
+                sp.GetService<IHttpContextAccessor>().HttpContext.User
+            );
+            services.AddSingleton<IAuthorizationHandler, TodoOwnerHandler>();
+            
+            services.AddTransient<TodoStore>();
             services.AddMvc();
         }
 
@@ -41,9 +53,10 @@ namespace NetCoreAuth.Mvc
             }
 
             app.UseStaticFiles();
-
-            app.UseCookieAuthentication();
-
+            app.UseCookieAuthentication(new CookieAuthenticationOptions 
+            {
+                AccessDeniedPath = new PathString("/Account/Forbidden/"),
+            });
             app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
             {
                 ClientId = Configuration["AzureAD:ClientId"],
@@ -51,7 +64,6 @@ namespace NetCoreAuth.Mvc
                 CallbackPath = "/signin-aad",
                 SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme
             });
-
             app.UseMvcWithDefaultRoute();
         }
     }

@@ -1,0 +1,18 @@
+@model NetCoreAuth.Mvc.Models.TodoItem
+@{
+    ViewBag.Title = "NetAuthCore.Mvc - Add Todo item";
+}
+
+<h1>Add todo item</h1>
+
+<form asp-action="Create" method="post">
+  
+    <p>
+        Todo: <input asp-for="Title" />
+    </p>
+    <p>
+        <button type="submit">Add</button>
+        <a asp-action="Index">Cancel</a>
+    </p>
+    
+</form>

@@ -6,7 +6,7 @@ namespace NetCoreAuth.Mvc.Controllers
     {
         public ActionResult Index()
         {
-            return  View(); 
+            return RedirectToAction("Index", "TodoItems");
         }
     }
 }
