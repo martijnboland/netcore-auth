@@ -53,7 +53,10 @@ namespace NetCoreAuth.Mvc
             }
 
             app.UseStaticFiles();
-            app.UseCookieAuthentication();
+            app.UseCookieAuthentication(new CookieAuthenticationOptions 
+            {
+                AccessDeniedPath = new PathString("/Account/Forbidden/"),
+            });
             app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
             {
                 ClientId = Configuration["AzureAD:ClientId"],

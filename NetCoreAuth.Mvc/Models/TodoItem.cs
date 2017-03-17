@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
 
 namespace NetCoreAuth.Mvc.Models
 {
-    public class TodoItem
+  public class TodoItem
     {
         public int Id { get; set; }
         public int Order { get; set; }

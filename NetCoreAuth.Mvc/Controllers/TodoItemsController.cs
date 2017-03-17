@@ -53,7 +53,7 @@ namespace NetCoreAuth.Mvc.Controllers
             }
             else
             {
-                return Forbid();
+                return Challenge();
             }
         }
 

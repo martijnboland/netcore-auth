@@ -23,20 +23,23 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a asp-controller="TodoItems" asp-action="Index">Todo items</a></li>
-                        <li><a asp-controller="Protected" asp-action="Index">Protected page</a></li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a asp-controller="UserInfo" asp-action="Index">User info</a></li>
+                        }
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="navbar-text">Logged in as @User.Identity.Name</li>
                             <li>
-                                <a asp-controller="Authentication" asp-action="Logout">Log out</a>
+                                <a asp-controller="Account" asp-action="Signout">Sign out</a>
                             </li>
                         }
                         else
                         {
                             <li>
-                                <a asp-controller="Authentication" asp-action="Login">Log in</a>
+                                <a asp-controller="Account" asp-action="Signin">Sign in</a>
                             </li>
                         }
                     </ul>
