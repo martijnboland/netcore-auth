@@ -1,0 +1,13 @@
+@{
+    ViewBag.Title = "NetAuthCore.Mvc - User info";
+}
+<h1>User info</h1>
+
+<h2>Claims</h2>
+<ul>
+    @foreach(var claim in User.Claims)
+    {
+        <li>@claim.Type: @claim.Value</li>
+    }
+</ul>
+
